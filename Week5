@@ -1,0 +1,111 @@
+########################################################################
+##
+## CS 101 Lab
+## Program 5
+## Name: Huynh Gia Huy-Jim Huynh
+## Email: hghydv@umsystem.edu
+##
+## PROBLEM : Create a function for The Linda Hall library that checking a new library card numbering system for students
+## the program gonna check the card number’s first 5characters are A-Z, which will normally be the first five characters of the student’s
+## name. The next character at index 5is a string value either 1, 2, or 3 which represents the different school The character
+## at index 6is either 1, 2, 3, or 4 and these are the grade level. The next 2 characters are 0-9, and the last character at index 9
+## is the check digit to verify the previous values.
+## ALGORITHM :
+##      Step 1: Start
+##      Step 2: Define function get_school
+##      Step 3: Define function get_grade
+##      Step 4: Define function character_value
+##      Step 5: Define function get_check_digit
+##      Step 6: Define function verify_check_digit
+##      Step 7: print(‘Linda Hall’) and (‘Library Card Check’) with centered and format and Print (= * 50)
+##      Step 8: Make a loop and loop checker based on function values
+##      Step 9: End
+##ERROR HANDLING:
+##      N/A
+##
+## OTHER COMMENTS:
+##      Any special comments
+##
+########################################################################
+def get_school(user_string):
+    if user_string[5] == '1':
+        return 'School of Computing and Engineering SCE'
+    elif user_string[5] == '2':
+        return 'School of Law'
+    elif user_string[5] == '3':
+        return 'College of Arts and Sciences'
+    else:
+        return 'Invalid School'
+def get_grade(user_string):
+    if user_string[6] == '1':
+        return 'Freshman'
+    elif user_string[6] == '2':
+        return 'Sophomore'
+    elif user_string[6] == '3':
+        return 'Junior'
+    elif user_string[6] == '4':
+        return 'Senior'
+    else:
+        return 'Invalid Grade'
+def character_value(c):
+    valuec = ord(c)
+    if valuec >= 65 and valuec <= 90 :
+        return valuec - 65
+    elif valuec >= 48 and valuec <=57:
+        return valuec - 48
+def get_check_digit(user_string):
+    digit = 0
+    for i in range(len(user_string)):
+        value = character_value(user_string[i])
+        digit = digit + value * (i + 1)
+    return digit % 10
+def verify_check_digit(user_string):
+    if len(user_string) != 10:
+        print('Library card is invalid')
+        print('The length of the number given must be 10')
+        return False
+    for i in range(5):
+        if user_string[i] < 'A' or user_string[i] > 'Z':
+            print('Library card is invalid')
+            print('The first 5 characters must be A-Z, the invalid character is at {} is {}'.format(i, user_string[i]))
+            return False
+    for i in range(7, 10):
+        if user_string[i] < '0' or user_string[i] > '9':
+            print('Library card is invalid')
+            print('The last 3 characters must be 0-9, the invalid character is at {} is {}'.format(i, user_string[i]))
+            return False
+    if user_string[5] != '1' and user_string[5] != '2' and user_string[5] != '3':
+        print('Library card is invalid')
+        print('The sixth character must be 1 2 or 3')
+        return False
+    if user_string[6] != '1' and user_string[6] != '2' and user_string[6] != '3' and user_string[6] != '4':
+        print('Library card is invalid')
+        print('The seventh character must be 1 2 3 or 4')
+        return False
+    check_digit = get_check_digit(user_string)
+    val = int(user_string[9])
+    if val != check_digit:
+        print('Library card is invalid')
+        print('Check digit {} does not match calculated value {}'.format(val, check_digit))
+        return False
+    print('Library card is valid')
+    return True
+if __name__ == '__main__':
+    print('{:^50}'.format('Linda Hall'))
+    print('{:^50}'.format('Library Card Check'))
+    print('=' * 50)
+    while True:
+        user_string = input('Enter Library Card. Hit Enter to Exit ==> ')
+        if user_string == '':
+            break
+        verify = verify_check_digit(user_string)
+        if verify == True:
+            school = get_school(user_string)
+            grade = get_grade(user_string)
+            print('The card belongs to a student in', school)
+            print('The card belongs to a', grade)
+        else:
+            print()
+
+
+
